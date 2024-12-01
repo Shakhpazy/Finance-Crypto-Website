@@ -1,0 +1,22 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: #15151c;
+    color: white;
+}
+
+.navbar a {
+    color: white;
+}
+
+.navbar a:hover{
+    color: white;
+    font-weight: bold;
+}
+
+.nav-item-5 a {
+    color: #1e1c36;
+}
