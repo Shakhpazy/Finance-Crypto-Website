@@ -1,18 +1,13 @@
-const API = "869bb1c9-4100-449f-93b4-383168b93565"
+import express from 'express'
 
-import axios from 'axios'
+const app = express()
+app.use(express.static("public"))
+const PORT = 3000
 
-axios.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/map', {
-      headers: {
-        'X-CMC_PRO_API_KEY': API,
-      },
-    })
-    .then(response => {
-        // Access the response data
-        const responseData = response.data
-        console.log(responseData)
-        // Process the response data here
-    })
-    .catch(error => {
-        console.log(error)
-    });
+app.get("/", (req, res) => {
+    res.render("")
+})
+
+app.listen(PORT, () => {
+    console.log("Server Active runnnig Port: " + PORT)
+})
