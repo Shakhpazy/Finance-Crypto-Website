@@ -59,15 +59,35 @@ footer p {
     color: white;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 480px) {
+
+    .row1 {
+        display: block;
+    }
+
+    #form1 > div > div {
+        margin: 1em;
+    }
+
+}
+
+@media screen and (max-width: 755px) {
 
     .twoCrypto {
         width: 100%;
     }
 
+    .row1 {
+        display: block;
+    }
+
+    #form1 > div > div {
+        margin: 1em;
+    }
+
 }
 
-@media screen and (min-width: 601px) {
+@media screen and (min-width: 756px) {
 
     .twoCrypto {
         width: 75%;
