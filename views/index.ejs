@@ -25,7 +25,34 @@
 
 
 <section id="topCryptos">
-
+  <div class="container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Price</th>
+          <th scope="col">Market Cap</th>
+          <th scope="col">Volume(24h)</th>
+          <th scope="col">Circulating Supply</th>
+          <th scope="col">Max Supply</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for( let i = 0; i < data.length; i++ ) { %>
+          <tr>
+            <td><%= i+1 %></td>
+            <td><%= data[i].name %> <%= data[i].symbol %></td>
+            <td><%= data[i].quote.USD.price %></td>
+            <td><%= data[i].quote.USD.market_cap %></td>
+            <td><%= data[i].quote.USD.volume_24h %></td>
+            <td><%= data[i].circulating_supply %></td>
+            <td><%= data[i].max_supply %></td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
 </section>
 
 <%- include('template/footer.ejs') %>
