@@ -1,4 +1,4 @@
-* {
+html {
     padding: 0;
     margin: 0;
 }
@@ -57,6 +57,19 @@ body {
 
 footer p {
     color: white;
+}
+
+.crtable {
+    width: 100%;
+}
+
+th, td {
+    border-bottom: 1px solid #323445;
+    padding: 25px;
+}
+
+tr:hover {
+    background-color: #323445;
 }
 
 @media screen and (max-width: 480px) {
