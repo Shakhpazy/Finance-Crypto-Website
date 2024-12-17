@@ -29,30 +29,32 @@
     <div class="d-flex justify-content-center mb-3">
       <h1 class="mb-1" style="color: #9593f5;">Top 20 Crypto</h1>
     </div>
-    <table class="table-dark crtable">
-      <thead> 
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Price</th>
-          <th scope="col">Market Cap</th>
-          <th scope="col">Volume(24h)</th>
-          <th scope="col">Circulating Supply</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% for( let i = 0; i < data.length; i++ ) { %>
+    <div class="table-responsive">
+      <table class="table-dark crtable">
+        <thead> 
           <tr>
-            <td><%= i+1 %></td>
-            <td><img src="<%= data[i].logo %>" class = "cryptologos" alt="Logo" style="width: 32px; margin-right: 5px;" /><%= data[i].name %> <%= data[i].symbol %></td>
-            <td>$<%= (Number((data[i].quote.USD.price).toFixed(2)).toLocaleString()) %></td>
-            <td>$<%= (Number((data[i].quote.USD.market_cap).toFixed(2)).toLocaleString()) %></td>
-            <td>$<%= (Number((data[i].quote.USD.volume_24h).toFixed(2)).toLocaleString()) %></td>
-            <td><%= (Number(data[i].circulating_supply.toFixed(2)).toLocaleString()) %></td>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Market Cap</th>
+            <th scope="col">Volume(24h)</th>
+            <th scope="col">Circulating Supply</th>
           </tr>
-        <% } %>
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          <% for( let i = 0; i < data.length; i++ ) { %>
+            <tr>
+              <td><%= i+1 %></td>
+              <td><img src="<%= data[i].logo %>" class = "cryptologos" alt="Logo" style="width: 32px; height: auto; margin-right: 5px;" /><span><%= data[i].name %> <%= data[i].symbol %></span></td>
+              <td>$<%= (Number((data[i].quote.USD.price).toFixed(2)).toLocaleString()) %></td>
+              <td>$<%= (Number((data[i].quote.USD.market_cap).toFixed(2)).toLocaleString()) %></td>
+              <td>$<%= (Number((data[i].quote.USD.volume_24h).toFixed(2)).toLocaleString()) %></td>
+              <td><%= (Number(data[i].circulating_supply.toFixed(2)).toLocaleString()) %></td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
