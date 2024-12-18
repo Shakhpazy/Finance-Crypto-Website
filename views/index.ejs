@@ -45,7 +45,7 @@
           <% for( let i = 0; i < data.length; i++ ) { %>
             <tr>
               <td><%= i+1 %></td>
-              <td><img src="<%= data[i].logo %>" class = "cryptologos" alt="Logo" style="width: 32px; height: auto; margin-right: 5px;" /><span><%= data[i].name %> <%= data[i].symbol %></span></td>
+              <td><img src="<%= data[i].logo %>" class = "cryptologos" alt="Logo" style="width: 32px; height: auto; margin-right: 5px;" /><span><%= data[i].name %> <span style="font-weight: 400; color: #595f70;";"><%= data[i].symbol %></span></span></td>
               <td>$<%= (Number((data[i].quote.USD.price).toFixed(2)).toLocaleString()) %></td>
               <td>$<%= (Number((data[i].quote.USD.market_cap).toFixed(2)).toLocaleString()) %></td>
               <td>$<%= (Number((data[i].quote.USD.volume_24h).toFixed(2)).toLocaleString()) %></td>
