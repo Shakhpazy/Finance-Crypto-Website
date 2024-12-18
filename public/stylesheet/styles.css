@@ -71,3 +71,7 @@ th, td {
 tr:hover {
     background-color: #323445;
 }
+
+td {
+    font-weight: bold;
+}
