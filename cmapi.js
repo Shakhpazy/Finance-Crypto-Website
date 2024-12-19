@@ -3,7 +3,7 @@ import { coinmarketcap } from './CoinMarketCap.js'
 const cmc = new coinmarketcap()
 
 //const test = await cmc.getCoinLogo("BTC,ETH,XRP")
-cmc.fetchCryptoData(5)
+//cmc.fetchCryptoData(5)
 
 const data = {
     BTC: {
@@ -305,4 +305,8 @@ const data = {
     }
 }
 
-//console.log(test)
+const data2 = await cmc.fetchCoin("BTC")
+//get the market cap data2.quote.USD.market_cap
+//get the multiple would be marketcap of 2 / market cap of 1
+//get new price of 1 would be current price of 1 * multiple
+console.log(data2)

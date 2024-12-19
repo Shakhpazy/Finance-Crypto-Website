@@ -32,14 +32,11 @@ export class coinmarketcap {
               let stringSymbol = "";
               // Example: Log the first cryptocurrency
               //return all data in key values
-              console.log("API IS USED");
-              console.log(data);
               (data).forEach(crypto => {
                 stringSymbol += crypto.symbol + ",";
               });
-              console.log(stringSymbol);
+
               const logoLinks = await this.getCoinLogo(stringSymbol);
-              console.log(logoLinks);
 
               for (const key in logoLinks) {
                 const link = logoLinks[key]
@@ -86,9 +83,32 @@ export class coinmarketcap {
         }
     }
 
-    async fetchCoin() {
-        //returns information given a coin like 
-        // market cap and previous history of the coin
+    async fetchCoin(stringofSymbol) {
+        const url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest";
+
+        const headers = {
+            "Accept": "application/json",
+            "X-CMC_PRO_API_KEY": API,
+        }
+
+        const params = {
+            "symbol": stringofSymbol,
+            "convert": "USD"   
+        }
+
+        try {
+            const response = await axios.get(url, { headers, params })
+            const data = response.data.data
+            const logoLinks = await this.getCoinLogo(stringofSymbol);
+            for (const key in logoLinks) {
+                const link = logoLinks[key]
+                data[stringofSymbol]["logo"] = link
+              }
+            return data[stringofSymbol]
+        } catch (error) {
+            console.log("API FAILED")
+            console.log(error)
+        }
     }
 
 

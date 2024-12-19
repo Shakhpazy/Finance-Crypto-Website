@@ -75,3 +75,26 @@ tr:hover {
 td {
     font-weight: bold;
 }
+
+.comparing {
+    text-align: center;
+}
+
+.list-group-item {
+    font-size: 1.15em;
+    font-weight: 600;
+}
+
+.c_active {
+    background: #1e1c36;
+    color: white;
+}
+
+.comparing > div > input {
+    border-radius: 10px;
+}
+
+.comparing > div > input:active {
+    border-radius: 10px;
+    border-color: #1e1c36;
+}
