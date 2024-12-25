@@ -11,6 +11,23 @@ document.addEventListener("DOMContentLoaded", () => {
   })
 })
 
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById('coin-form').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent the form from submitting the default way
+    // Get the coin symbol from the input field
+    let coinSymbol = document.getElementById('fcoin').value.trim().toUpperCase();
+    
+    if (coinSymbol) {
+      // Dynamically change the form action to match the /:coin route
+      this.action = `/${coinSymbol}`;
+  
+      // Now submit the form
+      this.submit();
+    } else {
+      alert("Please enter a coin symbol.");
+    }
+  })
+})
 //Changing the multiple color to red if the muliple is below 1 or keep defult as green
 document.addEventListener("DOMContentLoaded", () => {
   let multiple = document.querySelector("#compartingcoins > div > div.mb-4 > div > h2 > span.multiple").innerHTML

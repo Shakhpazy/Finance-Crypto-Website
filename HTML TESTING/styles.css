@@ -99,6 +99,10 @@ td {
     border-color: #1e1c36;
 }
 
+#topCryptos > div > div:nth-child(2) > form > button {
+    font-size: 1px;
+}
+
 /* specific crypto styleing */
 .line {
     position: relative;

@@ -92,7 +92,7 @@ export class coinmarketcap {
         }
 
         const params = {
-            "symbol" : StringofSymbols
+            "symbol" : StringofSymbols.toUpperCase()
         }
 
         try {
@@ -123,14 +123,14 @@ export class coinmarketcap {
         }
 
         const params = {
-            "symbol": stringofSymbol,
+            "symbol": stringofSymbol.toUpperCase(),
             "convert": "USD"   
         }
 
         try {
             const response = await axios.get(url, { headers, params })
             const data = response.data.data
-            const coinData = await this.getMoreCoinData(stringofSymbol);
+            const coinData = await this.getMoreCoinData(stringofSymbol.toUpperCase());
             for (const key in coinData) {
                 data[stringofSymbol]["logo"] = coinData[key].logo
                 data[stringofSymbol]["urls"] = coinData[key].urls
