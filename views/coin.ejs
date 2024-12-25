@@ -5,7 +5,9 @@
         <div class="CurrentPriceAction d-flex justify-content-between align-items-end">
             <div class="d-flex gap-3 align-items-end">
                 <div>
-                    <img class="coinIMG" src="<%= data.logo %>" alt="btcimg">
+                    <% if (data.logo) { %>
+                        <img class="coinIMG" src="<%= data.logo %>" alt="btcimg">
+                    <% } %>
                 </div>
                 <div>
                     <h1 class="m-0 titlecoin"><%= data.name %> (<%= data.symbol %>)</h1>

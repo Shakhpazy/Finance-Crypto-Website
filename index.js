@@ -36,7 +36,6 @@ app.post("/", async (req, res) => {
 app.get("/:coin", async (req, res) => {
     console.log("get specific coin")
     const theData = await API.fetchCoin(req.params.coin)
-    console.log(theData)
     res.render("coin.ejs", { data : theData })
 })
 
