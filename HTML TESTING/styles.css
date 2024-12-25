@@ -145,3 +145,28 @@ td {
   .pricetitle {
     color: #9693f5;
   }
+
+  #hero-coin > div > div:nth-child(4) > h5 > a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: #9693f5;
+  }
+
+  @media (max-width: 576px) {
+
+    .pricetitle {
+        font-size: 1.3em;
+    }
+
+    .titlecoin {
+        font-size: 1.3em;
+    }
+
+    #hero-coin > div > div.CurrentPriceAction.d-flex.justify-content-between.align-items-end > div.d-flex.gap-3.align-items-end > div:nth-child(2) > p {
+        font-size: .8em;
+    }
+
+    .coinIMG {
+        width: 48px;
+    }
+  }
