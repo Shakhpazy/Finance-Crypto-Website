@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     if (coinSymbol) {
       // Dynamically change the form action to match the /:coin route
-      this.action = `/${coinSymbol}`;
+      this.action = `/coin/${coinSymbol}`;
   
       // Now submit the form
       this.submit();
