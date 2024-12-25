@@ -120,6 +120,7 @@ td {
 
   #range-coin > div > div > div.title > h2 {
     color: #959399;
+    font-size: 1.4em;
   }
 
   #range-coin > div > div > div.data.d-flex.justify-content-between > p {
@@ -135,4 +136,12 @@ td {
   body > section.dilution-coin > div > div > div > p:nth-child(2) {
     color: #9693f5;
     font-size: 1.1em;
+  }
+
+  .subtitle {
+    color: #959399;
+  }
+  
+  .pricetitle {
+    color: #9693f5;
   }

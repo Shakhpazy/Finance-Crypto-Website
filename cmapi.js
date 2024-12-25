@@ -9,5 +9,5 @@ const cmc = new coinmarketcap()
 
 //console.log(testdata)
 
-let testing = await cmc.fetchCoin("BTC")
+let testing = await cmc.fetchCoin("KAS")
 console.log(testing)
