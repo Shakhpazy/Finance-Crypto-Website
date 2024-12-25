@@ -33,12 +33,11 @@ app.post("/", async (req, res) => {
     res.render("index.ejs", {data : theData, crypto1 : theCrypto1, crypto2 : theCrypto2})
 })
 
-app.get("/coin", async (req, res) => {
-    console.log("get")
-    //let theData = {name: 'Bitcoin', symbol: 'BTC', circulating_supply: 19796721, price: 104763.486, volume_24h: 62172072377.837494, max_supply: 21000000}
-    const theData = (await API.fetchCryptoData(20))
-    //res.render("index.ejs", {data : theData})
-    res.render("coin.ejs")
+app.get("/:coin", async (req, res) => {
+    console.log("get specific coin")
+    const theData = await API.fetchCoin(req.params.coin)
+    console.log(theData)
+    res.render("coin.ejs", { data : theData })
 })
 
 app.listen(PORT, () => {

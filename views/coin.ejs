@@ -5,50 +5,55 @@
         <div class="CurrentPriceAction d-flex justify-content-between align-items-end">
             <div class="d-flex gap-3 align-items-end">
                 <div>
-                    <img class="coinIMG" src="/images/btc.png" alt="btcimg">
+                    <img class="coinIMG" src="<%= data.logo %>" alt="btcimg">
                 </div>
                 <div>
-                    <h1 class="m-0 titlecoin">Bitcoin (BTC)</h1>
-                    <p class="m-0 subtitle">#1 RANK IN CRYPTO</p>
+                    <h1 class="m-0 titlecoin"><%= data.name %> (<%= data.symbol %>)</h1>
+                    <p class="m-0 subtitle">#<%= data.cmc_rank %> RANK IN CRYPTO</p>
                 </div>
             </div>
             <div>
-                <h1 class="m-0 pricetitle">$98,424.00</h1>
+                <h1 class="m-0 pricetitle">$<%= (Number((data.quote.USD.price).toFixed(2)).toLocaleString()) %></h1>
             </div>
         </div>
         <div class="links mt-5">
             <h3 class="m-0">Descirption</h3>
         </div>
         <div class="mt-3">
-            <p class="subtitle">Bitcoin (BTC) is a cryptocurrency launched in 2010. Users are able to generate BTC through the process of mi
-                ning. Bitcoin has a current supply of 19,800,765. The last known price of Bitcoin is 97,988.57907273 USD and is up 4.17 over the
-                 last 24 hours. It is currently trading on 11853 active market(s) with $44,949,167,878.44 traded over the last 24 hours. More in
-                formation can be found at https://bitcoin.org/.</p>
+            <p class="subtitle"><%= data.textDescritpion %></p>
         </div>
         <div class="mt-3">
             <h5 class="subtitle">
-                <a href="website">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-compass" viewBox="0 0 16 16">
-                        <path d="M8 16.016a7.5 7.5 0 0 0 1.962-14.74A1 1 0 0 0 9 0H7a1 1 0 0 0-.962 1.276A7.5 7.5 0 0 0 8 16.016m6.5-7.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0"/>
-                        <path d="m6.94 7.44 4.95-2.83-2.83 4.95-4.949 2.83 2.828-4.95z"/>
-                    </svg>
-                </a> 
-                <a href="whitepaper">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-backpack4" viewBox="0 0 16 16">
-                        <path d="M4 9.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zm1 .5v3h6v-3h-1v.5a.5.5 0 0 1-1 0V10z"/>
-                        <path d="M8 0a2 2 0 0 0-2 2H3.5a2 2 0 0 0-2 2v1c0 .52.198.993.523 1.349A.5.5 0 0 0 2 6.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6.5a.5.5 0 0 0-.023-.151c.325-.356.523-.83.523-1.349V4a2 2 0 0 0-2-2H10a2 2 0 0 0-2-2m0 1a1 1 0 0 0-1 1h2a1 1 0 0 0-1-1M3 14V6.937q.24.062.5.063h4v.5a.5.5 0 0 0 1 0V7h4q.26 0 .5-.063V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1m9.5-11a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
-                    </svg>
-                </a> 
-                <a href="X">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
-                        <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
-                    </svg>
-                </a> 
-                <a href="SourceCode">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
-                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
-                    </svg>
-                </a>
+                <% if (data.urls.website) { %>
+                    <a href="<%= data.urls.website[0] %>">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-compass" viewBox="0 0 16 16">
+                            <path d="M8 16.016a7.5 7.5 0 0 0 1.962-14.74A1 1 0 0 0 9 0H7a1 1 0 0 0-.962 1.276A7.5 7.5 0 0 0 8 16.016m6.5-7.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0"/>
+                            <path d="m6.94 7.44 4.95-2.83-2.83 4.95-4.949 2.83 2.828-4.95z"/>
+                        </svg>
+                    </a> 
+                <% } %>
+                <% if (data.urls.technical_doc[0]) { %>
+                    <a href="<%= data.urls.technical_doc[0] %>">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-backpack4" viewBox="0 0 16 16">
+                            <path d="M4 9.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5zm1 .5v3h6v-3h-1v.5a.5.5 0 0 1-1 0V10z"/>
+                            <path d="M8 0a2 2 0 0 0-2 2H3.5a2 2 0 0 0-2 2v1c0 .52.198.993.523 1.349A.5.5 0 0 0 2 6.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6.5a.5.5 0 0 0-.023-.151c.325-.356.523-.83.523-1.349V4a2 2 0 0 0-2-2H10a2 2 0 0 0-2-2m0 1a1 1 0 0 0-1 1h2a1 1 0 0 0-1-1M3 14V6.937q.24.062.5.063h4v.5a.5.5 0 0 0 1 0V7h4q.26 0 .5-.063V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1m9.5-11a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
+                        </svg>
+                    </a> 
+                <% } %>
+                <% if (data.urls.twitter[0]) { %>
+                    <a href="<%= data.urls.twitter[0] %>">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-twitter-x" viewBox="0 0 16 16">
+                            <path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z"/>
+                        </svg>
+                    </a> 
+                <% } %>
+                <% if (data.urls.source_code[0]) { %>
+                    <a href="<%= data.urls.source_code[0] %>">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+                            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                        </svg>
+                    </a>
+                <% } %>
             </h5>
         </div>
     </div>
@@ -67,8 +72,8 @@
                 <div class="current-price-marker"></div>
             </div>
             <div class="data d-flex justify-content-between">
-                <p>$94,575.00</p>
-                <p>$99,235.00</p>
+                <p>$<%= parseFloat((data.quote.USD.price * (1 + data.quote.USD.percent_change_7d / 100)).toFixed(2)).toLocaleString('en-US'); %></p>
+                <p>$<%= parseFloat((data.quote.USD.price / (1 + data.quote.USD.percent_change_7d / 100)).toFixed(2)).toLocaleString('en-US'); %></p>
             </div>
         </div>
         <div class="item">
@@ -79,8 +84,8 @@
                 <div class="current-price-marker"></div>
             </div>
             <div class="data d-flex justify-content-between">
-                <p>$1,872,556,575</p>
-                <p>$1,982,246,258</p>
+                <p>$<%= parseFloat((data.quote.USD.market_cap * (1 + data.quote.USD.percent_change_7d / 100)).toFixed(0)).toLocaleString('en-US'); %></p>
+                <p>$<%= parseFloat((data.quote.USD.market_cap / (1 + data.quote.USD.percent_change_7d / 100)).toFixed(0)).toLocaleString('en-US'); %></p>
             </div>
         </div>
     </div>
@@ -94,20 +99,20 @@
         <div class="row column-gap-3 mt-3">
             <div class="col-md d-flex justify-content-between">
                 <p>Market Cap</p>
-                <p>$1,948,675,331,852</p>
+                <p>$<%= (Number((data.quote.USD.market_cap).toFixed(0)).toLocaleString()) %></p>
             </div>
             <div class="col-md d-flex justify-content-between">
                 <p>Circulating Supply</p>
-                <p>$2,066,904,000,000</p>
+                <p><%= data.circulating_supply.toLocaleString() %></p>
             </div>
             <div class="w-100"></div>
             <div class="col-md d-flex justify-content-between">
                 <p>F.D. Market Cap</p>
-                <p>19,798,782</p>
+                <p>$<%= (Number((data.quote.USD.fully_diluted_market_cap).toFixed(0)).toLocaleString()) %></p>
             </div>
             <div class="col-md d-flex justify-content-between">
                 <p>Total Supply</p>
-                <p>21,000,000</p>
+                <p><%= data.total_supply.toLocaleString() %></p>
             </div>
         </div>
     </div>
@@ -119,26 +124,32 @@
             <h3>Chart</h3>
         </div>
         <div class="tradingview mt-3">
-            <!-- TradingView Widget BEGIN -->
-        <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"></div>
-            <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-            {
-            "width": "auto",
-            "height": "550",
-            "symbol": "BITSTAMP:BTCUSD",
-            "interval": "D",
-            "timezone": "Etc/UTC",
-            "theme": "dark",
-            "style": "1",
-            "locale": "en",
-            "allow_symbol_change": true,
-            "calendar": false,
-            "support_host": "https://www.tradingview.com"
-        }
-            </script>
-        </div>
+        <!-- TradingView Widget BEGIN -->
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <div class="tradingview-widget-copyright">
+                  <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
+                    <span class="blue-text">Track all markets on TradingView</span>
+                  </a>
+                </div>
+              
+                <!-- Script to embed TradingView widget with dynamic symbol -->
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+                  {
+                    "width": "auto",
+                    "height": "550",
+                    "symbol": "<%= data.symbol %>USDT", 
+                    "interval": "D",
+                    "timezone": "Etc/UTC",
+                    "theme": "dark",
+                    "style": "1",
+                    "locale": "en",
+                    "allow_symbol_change": true,
+                    "calendar": false,
+                    "support_host": "https://www.tradingview.com"
+                  }
+                </script>
+              </div>
         <!-- TradingView Widget END -->
         </div>
     </div>

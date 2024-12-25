@@ -1,3 +1,15 @@
+//Finding the range pecent for the specfic crypto page
+document.addEventListener("DOMContentLoaded", () => {
+  let low = document.querySelector("#range-coin > div > div.item.mt-3 > div.data.d-flex.justify-content-between > p:nth-child(1)").innerHTML
+  let high = document.querySelector("#range-coin > div > div.item.mt-3 > div.data.d-flex.justify-content-between > p:nth-child(2)").innerHTML
+  low = parseFloat((low.substring(1)).replace(/,/g, ''));
+  high = parseFloat((high.substring(1)).replace(/,/g, ''));
+  const currentprice = (low+high)/2
+  const percent = (currentprice/high)*100
+  document.querySelectorAll(".current-price-marker").forEach((element) => {
+    element.style.width = percent + "%"
+  })
+})
 
 //Changing the multiple color to red if the muliple is below 1 or keep defult as green
 document.addEventListener("DOMContentLoaded", () => {
@@ -7,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#compartingcoins > div > div.mb-4 > div > h2 > span.multiple").style.color = "#c46647"
   }
 })
-
 
 let amountInput = document.getElementById("amount")
 const muliple = parseFloat(document.querySelector("#price").innerHTML)
