@@ -83,6 +83,7 @@ export class coinmarketcap {
         }
     }
 
+    //params stringofSymbol only stakes 1 tikker symbol
     async fetchCoin(stringofSymbol) {
         const url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest";
 
@@ -99,10 +100,11 @@ export class coinmarketcap {
         try {
             const response = await axios.get(url, { headers, params })
             const data = response.data.data
-            const logoLinks = await this.getCoinLogo(stringofSymbol);
-            for (const key in logoLinks) {
-                const link = logoLinks[key]
-                data[stringofSymbol]["logo"] = link
+            const coinData = await this.getMoreCoinData(stringofSymbol);
+            for (const key in coinData) {
+                data[stringofSymbol]["logo"] = coinData[key].logo
+                data[stringofSymbol]["urls"] = coinData[key].urls
+                data[stringofSymbol]["textDescritpion"] = coinData[key].textDescription
               }
             return data[stringofSymbol]
         } catch (error) {
@@ -111,7 +113,65 @@ export class coinmarketcap {
         }
     }
 
+    //testing
+    async getMoreCoinData(StringofSymbols) {
+        const url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/info"
 
+        const headers = {
+            "Accept": "application/json",
+            "X-CMC_PRO_API_KEY": API,
+        }
+
+        const params = {
+            "symbol" : StringofSymbols
+        }
+
+        try {
+            const response = await axios.get(url, { headers, params })
+            const data = response.data.data
+            let coinData = {}
+            for (const key in data) {
+                coinData[data[key].id] = {"logo" : data[key].logo,
+                                          "urls" : data[key].urls,
+                                          "textDescription" : data[key].description}
+            }
+
+            return coinData
+        
+        } catch (error) {
+            console.log("API FAILED")
+            console.log(error)
+        }
+    }
 
 
 }
+
+
+/* async fetchCoin(stringofSymbol) {
+    const url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest";
+
+    const headers = {
+        "Accept": "application/json",
+        "X-CMC_PRO_API_KEY": API,
+    }
+
+    const params = {
+        "symbol": stringofSymbol,
+        "convert": "USD"   
+    }
+
+    try {
+        const response = await axios.get(url, { headers, params })
+        const data = response.data.data
+        const logoLinks = await this.getCoinLogo(stringofSymbol);
+        for (const key in logoLinks) {
+            const link = logoLinks[key]
+            data[stringofSymbol]["logo"] = link
+          }
+        return data[stringofSymbol]
+    } catch (error) {
+        console.log("API FAILED")
+        console.log(error)
+    }
+} */

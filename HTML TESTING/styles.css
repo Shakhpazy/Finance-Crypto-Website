@@ -98,3 +98,41 @@ td {
     border-radius: 10px;
     border-color: #1e1c36;
 }
+
+/* specific crypto styleing */
+.line {
+    position: relative;
+    background: #262424;
+    height: 8px;
+    border-radius: 4px;
+    margin: 10px 0px 5px 0px;
+  }
+
+  .current-price-marker {
+    position: relative;
+    /*background: linear-gradient(to right, #eb3841, #16c783);*/
+    background: #9693f5;
+    height: 8px;
+    border-radius: 4px;
+    margin: 10px 0px 5px 0px;
+    width: 70%;
+  }
+
+  #range-coin > div > div > div.title > h2 {
+    color: #959399;
+  }
+
+  #range-coin > div > div > div.data.d-flex.justify-content-between > p {
+    color: #9693f5;
+    font-weight: bold;
+  }
+
+  body > section.dilution-coin > div > div > div > p:nth-child(1) {
+    color: #959399;
+    font-size: 1.1em;
+  }
+
+  body > section.dilution-coin > div > div > div > p:nth-child(2) {
+    color: #9693f5;
+    font-size: 1.1em;
+  }

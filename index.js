@@ -33,6 +33,10 @@ app.post("/", async (req, res) => {
     res.render("index.ejs", {data : theData, crypto1 : theCrypto1, crypto2 : theCrypto2})
 })
 
+app.get("/coin/id", async (req, res) => {
+    console.log("specific coin get request")
+})
+
 app.listen(PORT, () => {
     console.log("Server Active runnnig Port: " + PORT)
 })
