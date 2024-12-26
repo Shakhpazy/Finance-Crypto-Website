@@ -11,15 +11,24 @@ body {
 .nav-item a {
     color: white;
     text-decoration: none;
+    font-size: 16px;
 }
 
 .nav-item a:hover{
     color: white;
-    font-weight: bold;
 }
 
-.nav-item-5 a {
+#navbarSupportedContent > ul > li:nth-child(3) > a:hover {
+    background-color: #1e1c36;
+}
+
+#navbarSupportedContent > ul > li:nth-child(4) > a {
     color: #1e1c36;
+}
+
+#navbarSupportedContent > ul > li:nth-child(4) > a:hover {
+    background-color: #1e1c36;
+    color: white;
 }
 
 .crypto {
