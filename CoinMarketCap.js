@@ -1,6 +1,9 @@
 import axios from 'axios'
+import env from 'dotenv'
 
-const API = "869bb1c9-4100-449f-93b4-383168b93565"
+//"869bb1c9-4100-449f-93b4-383168b93565"
+env.config()
+const API = process.env.CMC_API
 
 export class coinmarketcap {
 

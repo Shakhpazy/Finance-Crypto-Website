@@ -6,6 +6,7 @@ import { coinmarketcap } from './CoinMarketCap.js'
 
 const PORT = 3000
 const app = express()
+
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({ extended: true }))
 
@@ -13,9 +14,8 @@ const API = new coinmarketcap();
 
 app.get("/", async (req, res) => {
     console.log("get main page")
-    //let theData = {name: 'Bitcoin', symbol: 'BTC', circulating_supply: 19796721, price: 104763.486, volume_24h: 62172072377.837494, max_supply: 21000000}
     const theData = (await API.fetchCryptoData(20))
-    //res.render("index.ejs", {data : theData})
+
     res.render("index.ejs", {data : theData, crypto1 : undefined, crypto2 : undefined})
 })
 
