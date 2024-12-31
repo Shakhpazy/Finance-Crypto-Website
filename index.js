@@ -39,6 +39,18 @@ app.get("/coin/:coin", async (req, res) => {
     res.render("coin.ejs", { data : theData })
 })
 
+app.get("/portfolio", (req, res) => {
+    console.log("get about portfolio")
+    res.render("portfolio.ejs")
+})
+
+app.post("/portfolio", async (req, res) => {
+    const data = req.body
+    console.log(data)
+    console.log("post about portfolio")
+    res.redirect("/portfolio")
+})
+
 app.listen(PORT, () => {
     console.log("Server Active runnnig Port: " + PORT)
 })
