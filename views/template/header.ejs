@@ -18,16 +18,22 @@
               <div class="navbar-collapse flex-row-reverse collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-">
                     <li class="nav-item 1">
-                        <a class="nav-link m-1" aria-current="page" href="#footer">CRYPTO</a>
+                        <a class="nav-link m-1" aria-current="page" href="/cryptocurrency">CRYPTO</a>
                     </li>
                     <li class="nav-item 2">
-                        <a class="nav-link m-1" aria-current="page" href="#footer">ROI CALCULATOR</a>
+                        <a class="nav-link m-1" aria-current="page" href="/portfolio">MY PORTFOLIO</a>
                     </li>
                     <li class="nav-item 3">
-                        <a type="button" class="nav-link-active m-1 btn btn-outline-light" aria-current="page" href="#footer">Log In</a>
+                        <% if (user) { %>
+                            <a type="button" class="nav-link-active m-1 btn btn-outline-light" aria-current="page" href="/logout">Log Out</a>
+                        <% } else { %>
+                            <a type="button" class="nav-link-active m-1 btn btn-outline-light" aria-current="page" href="/login">Log In</a>
+                        <% } %>
                     </li>
                     <li class="nav-item 4">
-                        <a type="button" class="nav-link-active m-1 btn btn-light" aria-current="page" href="#footer">Sign Up</a>
+                        <% if (!user) { %>
+                            <a type="button" class="nav-link-active m-1 btn btn-light" aria-current="page" href="/register">Sign Up</a>
+                        <% } %>
                     </li>
                 </ul>
               </div>

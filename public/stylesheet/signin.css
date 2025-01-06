@@ -1,0 +1,42 @@
+html,
+body {
+  background-color: #15151c;
+  color: white;
+  height: 100vh;
+}
+
+.wrapper {
+    height: 90%;
+}
+.form-signin {
+  max-width: 330px;
+  padding: 1rem;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.nav-link {
+  color: white;
+}
+
+.nav-item a:hover{
+  color: azure;
+}
+
+svg path {
+  fill: white; 
+}

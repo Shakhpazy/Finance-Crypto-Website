@@ -15,7 +15,7 @@ body {
 }
 
 .nav-item a:hover{
-    color: white;
+    color: azure;
 }
 
 #navbarSupportedContent > ul > li:nth-child(3) > a:hover {
@@ -124,7 +124,7 @@ td {
     height: 8px;
     border-radius: 4px;
     margin: 10px 0px 5px 0px;
-    width: 70%;
+    width: 0%;
   }
 
   #range-coin > div > div > div.title > h2 {
@@ -181,6 +181,57 @@ td {
     display: none;
 }
 
+/* search styling */
+.dropdown {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto; /* Vertical scrolling only */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    display: none;
+    position: absolute;
+    background-color: #1e1c36;
+    width: 200px; /* Adjust to match the search bar's width */
+    box-sizing: border-box; /* Include padding/border in the width */
+    word-wrap: break-word; /* Break long text onto multiple lines */
+}
+
+.dropdown li {
+    cursor: pointer;
+    padding: 10px;
+}
+
+.dropdown li:hover {
+    background-color: #9693f5;
+}
+
+/* pagination */
+.page-link {
+    background-color: #15151c;
+    color: white;
+    font-weight: 500;
+    font-size: 1.05em;
+    border: none;
+}
+
+#topCryptos > div > div.mt-3 > nav > ul > li.page-item.active > a {
+    background-color: #9693f5;
+}
+
+#topCryptos > div > div.mt-3 > nav > ul > li.page-item > a:hover {
+    background-color: #9693f5;
+    color: white;
+}
+
+#topCryptos > div > div.mt-3 > nav > ul > li.page-item.disabled > a {
+    background-color: #9693f5;
+    color: #323445;
+    opacity: .5;
+}
+
+/* media queries */
   @media (max-width: 576px) {
 
     .pricetitle {
@@ -199,3 +250,7 @@ td {
         width: 48px;
     }
   }
+
+svg path {
+    fill: #9693f5; 
+}

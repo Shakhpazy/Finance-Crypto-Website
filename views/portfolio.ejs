@@ -11,7 +11,7 @@
     </div>
     <div class="container d-flex justify-content-between">
         <div>
-            <h1>$51,482.26</h1>
+            <h1>$<%= Number(Number(total).toFixed(2)).toLocaleString() %></h1>
         </div>
         <div>
             <a class="addcoins" id="togglebutton" style="cursor: pointer;">+ Add Coin</a>
@@ -23,9 +23,11 @@
         </div>
         <div class="d-flex justify-content-center">
             <form action="" method="POST" id="coin_portfolio" style="width: 200px;">
-                <input type="text" class="crypto form-control mt-2" placeholder="Coin" id="coin" name="coin">
-                <input type="text" class="crypto form-control mt-2" placeholder="Amount" id="amount" name="amount">
-                <input type="text" class="crypto form-control mt-2" placeholder="Avg. Buy Price" id="avg_buy_price" name="avg_buy_price">
+                <input autocomplete="off" type="text" class="search-bar crypto form-control mt-2" placeholder="Coin" id="coin" name="coin">
+                <ul class="dropdown" id="coinlist"></ul>
+                <input autocomplete="off" type="text" class="crypto form-control mt-2" placeholder="Amount" id="amount" name="amount">
+                <input autocomplete="off" type="text" class="crypto form-control mt-2" placeholder="Avg. Buy Price" id="avg_buy_price" name="avg_buy_price">
+                <input autocomplete="off" type="text" class="crypto form-control mt-2" placeholder="Avg. Sell Price" id="avg_sell_price" name="avg_sell_price">
                 <button type="submit" class="calculatebutton btn mt-2 px-4">+ Add Coin</button>
             </form>
         </div>
@@ -46,21 +48,31 @@
                   <th scope="col">Avg. Buy Price</th>
                   <th scope="col">Profit/Loss</th>
                   <th scope="col">Sell Price</th>
-                  <th scope="col">Profit</th>
+                  <th scope="col">Potential Profit</th>
                 </tr>
               </thead>
-              <tbody>
-                  <tr>
-                    <td style="padding-left: 0px;"><a href="/coin" style="text-decoration: none; color: white;"><img src="/images/btc.png" class = "cryptologos" alt="Logo" style="width: 32px; height: auto; margin-right: 5px;" /><span>Bitcoin<span style="font-weight: 400; color: #595f70;";"> btc</span></span></a></td>
-                    <td>$</td>
-                    <td>$</td>
-                    <td>$</td>
-                    <td>$</td>
-                    <td>$</td>
-                    <td>$</td>
-                    <td>$</td>
-                  </tr>
-              </tbody>
+
+              <% if (entries.length > 0) { %>
+                <tbody>
+                    <% for( let i = 0; i < entries.length; i++ ) { %>
+                        <tr>
+                            <td style="padding-left: 0px;"><a href="/coin/<%= entries[i].name %>" style="text-decoration: none; color: white;"><img src="<%= entries[i].logo_url %>" class = "cryptologos" alt="Logo" style="width: 32px; height: auto; margin-right: 5px;" /><span><%= entries[i].name %><span style="font-weight: 400; color: #595f70;";"> <%= entries[i].symbol %></span></span></a></td>
+                            <td>$<%= Number(Number(entries[i].price).toFixed(2)).toLocaleString() %></td>
+                            <td>$<%= Number(Number(entries[i].market_cap).toFixed(2)).toLocaleString() %></td>
+                            <td><%= entries[i].amount.toLocaleString() %></td>
+                            <td>$<%= entries[i].avg_buy.toLocaleString() %></td>
+                            <td class="pnl">$<%= Number((entries[i].amount * (entries[i].price - entries[i].avg_buy)).toFixed(2)).toLocaleString() %></td>
+                            <td>$<%= entries[i].avg_sell.toLocaleString() %></td>
+                            <td>$<%= Number((entries[i].amount * (entries[i].avg_sell - entries[i].avg_buy)).toFixed(2)).toLocaleString() %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+              <% } else { %>
+                <tr>
+                    <td colspan="12" class="text-center">You Have No Coin Inserted</td>
+                </tr>
+              <% } %>
+
             </table>
           </div>
     </div>

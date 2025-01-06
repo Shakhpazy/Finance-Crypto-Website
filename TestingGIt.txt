@@ -12,3 +12,8 @@ the coinmarketcap API that updates periodically
 1 minute : 1440 calls a day ---> 43,200 calls a month
 5 mminute : 288 calls a day ---> 8,640 calls a month
 
+
+new api calls to store in a database for 1000 coins
+10 credits to get extra data
+5 credits to get base data
+15 total
