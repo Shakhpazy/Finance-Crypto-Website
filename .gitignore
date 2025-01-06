@@ -1,5 +1,5 @@
 # Node.js
-
+node_modules/
 
 # Logs
 logs
@@ -33,3 +33,4 @@ out/
 .DS_Store
 
 HTML TESTING
+.vercel
