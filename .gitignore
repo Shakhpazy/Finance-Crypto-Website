@@ -1,5 +1,5 @@
 # Node.js
-node_modules/
+
 
 # Logs
 logs
@@ -29,5 +29,7 @@ logs
 dist/
 build/
 out/
+
+.DS_Store
 
 HTML TESTING
