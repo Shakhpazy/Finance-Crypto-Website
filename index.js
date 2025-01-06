@@ -25,7 +25,7 @@ app.use(paginate.middleware(10, 100))
 const SALTROUNDS = Number(process.env.SALT_ROUNDS)
 
 app.use(session({
-    secret : "TOPSECRETWORD",
+    secret : process.env.SECRET,
     resave : false,
     saveUninitialized: true,
   }));
@@ -58,7 +58,7 @@ app.get("/", async (req, res) => {
     let theData = []
     try {
         //api call to update the database --> then get all rows
-        (await API.fetchCryptoData(1000))
+        //(await API.fetchCryptoData(1000))
         theData = (await db.query("SELECT * FROM coins ORDER BY market_cap DESC LIMIT 20")).rows  
     } catch (error) {
         console.log(error)
@@ -313,6 +313,12 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
     done(null, user)
 })
+
+// api calls
+setInterval(() => {
+    console.log("5 minute past...")
+    API.fetchCryptoData(1000)
+}, 180000 * 5)
 
 app.listen(PORT, () => {
     console.log("Server Active runnnig Port: " + PORT)
