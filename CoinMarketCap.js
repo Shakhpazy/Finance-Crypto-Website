@@ -1,19 +1,12 @@
 import axios from 'axios'
 import env from 'dotenv'
 import pg from 'pg'
+import db from './index.js'
 
 //"869bb1c9-4100-449f-93b4-383168b93565"
 env.config()
 const API = process.env.CMC_API
 
-//database connections
-const db = new pg.Client({
-    user: process.env.USER_DB,
-    host: process.env.HOST_DB,
-    database: process.env.DB_DB,
-    password: process.env.PASS_DB,
-    port: process.env.PORT_DB
-})
 
 
 export class coinmarketcap {
@@ -67,12 +60,12 @@ export class coinmarketcap {
                 map[key]["description"] = extradata[key].textDescription
               }
               //insert into database
-              await this.#insertCoins(map)
+              await this.insertCoins(map)
               return
 
           } catch (error) {
             console.log("API FAILED1")
-            console.log(error.status)
+            console.log(error)
           }
     }
 
@@ -108,61 +101,113 @@ export class coinmarketcap {
     }
 
     //database functions
-    async #insertCoins(map) {
-        console.log("Inserting coins into database")    
-        try {
-            await db.connect(); // Connect to the database
-            
-            //check if database has items already so we can delete all entries
-            const checkQuery = await db.query('SELECT * FROM coins')
-            if (checkQuery.rows.length > 0) {
-                await db.query('DELETE FROM coins')
-            }
-
-            // Start a transaction to ensure data consistency
-            await db.query('BEGIN');
-            
-            const insertQuery = `
-            INSERT INTO coins (
-                cmc_id, name, symbol, description, logo_url, social_media_urls, price, market_cap, volume_24h, percent_change_1h, percent_change_24h, percent_change_7d, circulating_supply, total_supply, max_supply, last_updated, cmc_rank
-            ) VALUES (
-                $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17
-            )`;
+    async insertCoins(map) {
+        console.log("coins to database");
     
-            // Loop over the map (assuming it's an array of coins)
-            for (const key in map) {
-                let coinData = map[key]
-                // Insert each coin data into the database
-                await db.query(insertQuery, [
-                    coinData.cmc_id,
-                    coinData.name,
-                    coinData.symbol,
-                    coinData.description,
-                    coinData.logo,
-                    coinData.urls,
-                    coinData.price,
-                    coinData.market_cap,
-                    coinData.volume_24h,
-                    coinData.percent_change_1h,
-                    coinData.percent_change_24h,
-                    coinData.percent_change_7d,
-                    coinData.circulating_supply,
-                    coinData.total_supply,
-                    coinData.max_supply,
-                    coinData.last_updated,
-                    coinData.cmc_rank
-                ]);
+        try {
+            // Check if the database has items already so we can decide the action
+            const checkQuery = await db.query('SELECT * FROM coins');
+    
+            // Start a transaction
+            await db.query('BEGIN');
+    
+            if (checkQuery.rows.length <= 0) {
+                const insertQuery = `
+                    INSERT INTO coins (
+                        cmc_id, name, symbol, description, logo_url, social_media_urls, 
+                        price, market_cap, volume_24h, percent_change_1h, percent_change_24h, 
+                        percent_change_7d, circulating_supply, total_supply, max_supply, 
+                        last_updated, cmc_rank
+                    ) VALUES (
+                        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 
+                        $12, $13, $14, $15, $16, $17
+                    )`;
+    
+                for (const key in map) {
+                    let coinData = map[key];
+                    await db.query(insertQuery, [
+                        coinData.cmc_id,
+                        coinData.name,
+                        coinData.symbol,
+                        coinData.description,
+                        coinData.logo,
+                        coinData.urls,
+                        coinData.price,
+                        coinData.market_cap,
+                        coinData.volume_24h,
+                        coinData.percent_change_1h,
+                        coinData.percent_change_24h,
+                        coinData.percent_change_7d,
+                        coinData.circulating_supply,
+                        coinData.total_supply,
+                        coinData.max_supply,
+                        coinData.last_updated,
+                        coinData.cmc_rank
+                    ]);
+                }
+                console.log('Coins inserted successfully');
+            } else {
+                const upsertQuery = `
+                    INSERT INTO coins (
+                        cmc_id, name, symbol, description, logo_url, social_media_urls, 
+                        price, market_cap, volume_24h, percent_change_1h, percent_change_24h, 
+                        percent_change_7d, circulating_supply, total_supply, max_supply, 
+                        last_updated, cmc_rank
+                    ) VALUES (
+                        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 
+                        $12, $13, $14, $15, $16, $17
+                    ) ON CONFLICT (cmc_id) DO UPDATE SET 
+                        name = EXCLUDED.name,
+                        symbol = EXCLUDED.symbol,
+                        description = EXCLUDED.description,
+                        logo_url = EXCLUDED.logo_url,
+                        social_media_urls = EXCLUDED.social_media_urls,
+                        price = EXCLUDED.price,
+                        market_cap = EXCLUDED.market_cap,
+                        volume_24h = EXCLUDED.volume_24h,
+                        percent_change_1h = EXCLUDED.percent_change_1h,
+                        percent_change_24h = EXCLUDED.percent_change_24h,
+                        percent_change_7d = EXCLUDED.percent_change_7d,
+                        circulating_supply = EXCLUDED.circulating_supply,
+                        total_supply = EXCLUDED.total_supply,
+                        max_supply = EXCLUDED.max_supply,
+                        last_updated = EXCLUDED.last_updated,
+                        cmc_rank = EXCLUDED.cmc_rank;
+                `;
+    
+                for (const key in map) {
+                    let coinData = map[key];
+                    await db.query(upsertQuery, [
+                        coinData.cmc_id,
+                        coinData.name,
+                        coinData.symbol,
+                        coinData.description,
+                        coinData.logo,
+                        coinData.urls,
+                        coinData.price,
+                        coinData.market_cap,
+                        coinData.volume_24h,
+                        coinData.percent_change_1h,
+                        coinData.percent_change_24h,
+                        coinData.percent_change_7d,
+                        coinData.circulating_supply,
+                        coinData.total_supply,
+                        coinData.max_supply,
+                        coinData.last_updated,
+                        coinData.cmc_rank
+                    ]);
+                }
+                console.log('Coins upserted successfully');
             }
     
             // Commit the transaction after all queries
             await db.query('COMMIT');
-            console.log('Coins inserted successfully');
         } catch (error) {
-            // In case of error, rollback the transaction
-            await db.query('ROLLBACK');
+            if (db) {
+                // Rollback transaction in case of error
+                await db.query('ROLLBACK');
+            }
             console.error('Error inserting coins:', error);
-        } finally {
-            await db.end(); // Close the database connection
         }
     }
 

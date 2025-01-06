@@ -41,6 +41,7 @@ const db = new pg.Client({
     port: process.env.PORT_DB
 })
 db.connect()
+export default db;
 
 app.use(express.static("public")) 
 app.use(express.json());
@@ -57,7 +58,7 @@ app.get("/", async (req, res) => {
     let theData = []
     try {
         //api call to update the database --> then get all rows
-        //(await API.fetchCryptoData(1000))
+        (await API.fetchCryptoData(1000))
         theData = (await db.query("SELECT * FROM coins ORDER BY market_cap DESC LIMIT 20")).rows  
     } catch (error) {
         console.log(error)
