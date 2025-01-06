@@ -50,8 +50,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 const API = new coinmarketcap();
 
 
-
-
+//first api call to store db
+//await API.fetchCryptoData(1000)
 app.get("/", async (req, res) => {
     // console.log("get main page")
     // console.log(req.user)
@@ -316,9 +316,9 @@ passport.deserializeUser((user, done) => {
 
 // api calls
 setInterval(() => {
-    console.log("5 minute past...")
+    console.log("3 minute past...")
     API.fetchCryptoData(1000)
-}, 180000 * 5)
+}, 180000)
 
 app.listen(PORT, () => {
     console.log("Server Active runnnig Port: " + PORT)
