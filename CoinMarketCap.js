@@ -3,7 +3,7 @@ import env from 'dotenv'
 import pg from 'pg'
 import db from './index.js'
 
-//"869bb1c9-4100-449f-93b4-383168b93565"
+
 env.config()
 const API = process.env.CMC_API
 
