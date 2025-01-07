@@ -47,8 +47,6 @@ app.use(session({
 const db = new pg.Pool({
     connectionString: process.env.DATABASE_URL
 })
-export default db
-
 
 app.use(express.static("public")) 
 app.use(express.json());
@@ -66,7 +64,6 @@ app.get('/test-db', async (req, res) => {
       res.status(500).json({ message: 'Database connection failed!', error: err });
     }
 });
-
 //first api call to store db
 //await API.fetchCryptoData(1000)
 app.get("/", async (req, res) => {
@@ -336,5 +333,8 @@ setInterval(() => {
 }, 180000 * 5)
 
 app.listen(PORT, () => {
-    console.log("Server Active runnnig Port: " + PORT)
+      console.log("Server Active runnnig Port: " + PORT)
 })
+
+export default app
+export {db}

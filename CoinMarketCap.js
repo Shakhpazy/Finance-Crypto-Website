@@ -1,7 +1,6 @@
 import axios from 'axios'
 import env from 'dotenv'
-import pg from 'pg'
-import db from './index.js'
+import { db } from './index.js'
 
 
 env.config()
