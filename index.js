@@ -4,6 +4,7 @@ import pg from 'pg'
 import env from 'dotenv'
 import paginate from 'express-paginate'
 //user auth and encryption
+import postgres from 'postgres'
 import bcrypt from 'bcrypt'
 import passport from 'passport'
 import { Strategy } from 'passport-local'
@@ -32,16 +33,22 @@ app.use(session({
   
   app.use(passport.initialize());
   app.use(passport.session())
+
 //database connections
-const db = new pg.Client({
-    user: process.env.USER_DB,
-    host: process.env.HOST_DB,
-    database: process.env.DB_DB,
-    password: process.env.PASS_DB,
-    port: process.env.PORT_DB
+// const db = new pg.Client({
+//     user: process.env.USER_DB,
+//     host: process.env.HOST_DB,
+//     database: process.env.DB_DB,
+//     password: process.env.PASS_DB,
+//     port: process.env.PORT_DB
+// })
+// db.connect()
+// export default db;
+const db = new pg.Pool({
+    connectionString: process.env.DATABASE_URL
 })
-db.connect()
-export default db;
+export default db
+
 
 app.use(express.static("public")) 
 app.use(express.json());
@@ -49,6 +56,16 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 const API = new coinmarketcap();
 
+app.get('/test-db', async (req, res) => {
+    try {
+      const result = await db.query('SELECT * FROM users');
+      console.log(result)
+      res.json({ message: 'Database connected!', time: result.rows[0] });
+    } catch (err) {
+      console.log('Error connecting to the database:', err);
+      res.status(500).json({ message: 'Database connection failed!', error: err });
+    }
+});
 
 //first api call to store db
 //await API.fetchCryptoData(1000)
@@ -68,7 +85,6 @@ app.get("/", async (req, res) => {
 
 
 app.get("/portfolio", async (req, res) => {
-    console.log(req.user)
     if (req.isAuthenticated()) {
         const user = req.user
         let portolio_entries = []
@@ -81,8 +97,6 @@ app.get("/portfolio", async (req, res) => {
         } catch (error) {
             console.log(error)
         }
-        console.log(portolio_entries[0])
-        console.log(total)
         res.render("portfolio.ejs", {user : req.user, total : total, entries : portolio_entries})
     }
     else {
@@ -160,7 +174,6 @@ app.post("/portfolio", async (req, res) => {
     const avg_sell = parseFloat(data.avg_sell_price)
 
     console.log("post about portfolio")
-    console.log(coinName, coinAmount, avg_buy, avg_sell)
 
     if(!coinAmount || !avg_buy || !coinName || !avg_sell) {
         console.log("inputs may not be valid")
@@ -215,10 +228,11 @@ app.post("/", async (req, res) => {
 app.post("/register", async (req, res) => {
     const email = req.body.email.toLowerCase()
     const password = req.body.password
-
+    console.log("testing")
     try {
         //check if email already in the system
         const results = await db.query('SELECT * FROM users where email = $1', [email])
+        console.log(results.rows.length)
         if (results.rows.length >= 1) {
             console.log("account exist")
             res.redirect("/login")
@@ -228,9 +242,10 @@ app.post("/register", async (req, res) => {
                 if (err) {
                     console.log(err)
                 } else {
+                    console.log("insterting")
                     await db.query('INSERT INTO users (email, password) VALUES($1, $2)', [email, hash])
                     console.log("user registered")
-                    res.redirect("/")
+                    res.redirect("/login")
                 }  
             })
         }
@@ -316,9 +331,9 @@ passport.deserializeUser((user, done) => {
 
 // api calls
 setInterval(() => {
-    console.log("3 minute past...")
+    console.log("15 minute past...")
     API.fetchCryptoData(1000)
-}, 180000)
+}, 180000 * 5)
 
 app.listen(PORT, () => {
     console.log("Server Active runnnig Port: " + PORT)
