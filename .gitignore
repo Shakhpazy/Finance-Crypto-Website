@@ -1,20 +1,16 @@
 # Node.js
 
-
-# Logs
-logs
-*.log
-npm-debug.log*
-
 # Dependency directories
-pids
-logs
+node_modules/
+node_modules
+pids/
+logs/
 *.pid
 *.seed
 *.pid.lock
 
 # Optional npm cache directory
-.npm
+.npm/
 
 # Optional eslint cache
 .eslintcache
@@ -30,7 +26,20 @@ dist/
 build/
 out/
 
+# macOS system files
 .DS_Store
 
-HTML TESTING
-.vercel
+# Vercel deployment files
+.vercel/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# HTML Testing files
+html-test-output/
+
+# Temporary files
+*.swp
+*~
