@@ -71,7 +71,7 @@ app.get('/test-db', async (req, res) => {
 //await API.fetchCryptoData(1000)
 app.get("/", async (req, res) => {
     // console.log("get main page")
-    // console.log(req.user)
+    console.log(req.user)
     let theData = []
     try {
         //api call to update the database --> then get all rows
@@ -225,7 +225,7 @@ app.post("/", async (req, res) => {
     res.render("index.ejs", {data : theData, crypto1 : theCrypto1, crypto2 : theCrypto2, user : req.user})  
 })
 
-app.post("/register", async (req, res) => {
+app.post("/register", async function (req, res, next) {
     const email = req.body.email.toLowerCase()
     const password = req.body.password
     console.log("testing")
@@ -245,7 +245,19 @@ app.post("/register", async (req, res) => {
                     console.log("insterting")
                     await db.query('INSERT INTO users (email, password) VALUES($1, $2)', [email, hash])
                     console.log("user registered")
-                    res.redirect("/login")
+                    let user = {
+                        email : email,
+                        password : hash
+                    }
+                    req.login(user, (err) => {
+                        if (err) {
+                            console.error("Error during login:", err);
+                            return
+                        }
+                        console.log("User authenticated:");  // Log the authenticated user
+                        return res.redirect("/");  // Successful login, redirect
+                    });
+                    //res.redirect("/login")
                 }  
             })
         }
