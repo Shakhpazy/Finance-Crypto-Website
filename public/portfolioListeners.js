@@ -60,3 +60,29 @@ pnlEntries.forEach(elm => {
     }
 });
 
+
+document.querySelectorAll(".a_trash").forEach(trash => {
+    trash.addEventListener("click", async (e) => {
+
+        if (confirm("Would you like to delete the coin?")) {
+            const value = trash.getAttribute('value');
+
+            const response = await fetch("/deletePortfolioItem?id=" + value, {
+                method: "DELETE"
+            })
+
+            if (response.status == 200) {
+                const row = document.getElementById("row"+value)
+                row.remove()
+            } 
+            else {
+                console.log("error deleting item")
+            }
+
+        } 
+        else {
+            return
+        }
+
+    })
+})

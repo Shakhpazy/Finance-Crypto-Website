@@ -231,6 +231,18 @@ td {
     opacity: .5;
 }
 
+.coinIMG {
+    max-width: 64px;
+}
+
+.trash path {
+    fill: white;
+}
+
+.trash path:hover {
+    fill: #eb3841;
+}
+
 /* media queries */
   @media (max-width: 576px) {
 

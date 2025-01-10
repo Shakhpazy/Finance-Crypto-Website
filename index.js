@@ -57,21 +57,11 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 const API = new coinmarketcap();
 
-app.get('/test-db', async (req, res) => {
-    try {
-      const result = await db.query('SELECT * FROM users');
-      console.log(result)
-      res.json({ message: 'Database connected!', time: result.rows[0] });
-    } catch (err) {
-      console.log('Error connecting to the database:', err);
-      res.status(500).json({ message: 'Database connection failed!', error: err });
-    }
-});
 //first api call to store db
 //await API.fetchCryptoData(1000)
 app.get("/", async (req, res) => {
     // console.log("get main page")
-    console.log(req.user)
+    // console.log(req.user)
     let theData = []
     try {
         //api call to update the database --> then get all rows
@@ -303,6 +293,24 @@ app.get("/logout", (req, res) => {
       });
 })
 
+app.delete("/deletePortfolioItem", async (req, res) => {
+    const id = req.query.id
+    try {
+        const result = await db.query("DELETE FROM portfolio WHERE id = $1", [id])
+        console.log(result)
+        if (result.rowCount > 0) {
+            res.status(200).json({ message: 'Portfolio item deleted successfully' });
+          } else {
+            res.status(404).json({ message: 'Portfolio item not found' });
+          }
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting portfolio item' });
+    }
+})
+
+
+
+
 passport.use(new Strategy({
     usernameField: 'email', 
     passwordField: 'password' 
@@ -346,6 +354,23 @@ setInterval(() => {
     console.log("15 minute past...")
     API.fetchCryptoData(1000)
 }, 180000 * 5)
+
+
+
+
+//DATABASE TEST CONNECTION
+// app.get('/test-db', async (req, res) => {
+//     try {
+//       const result = await db.query('SELECT * FROM users');
+//       console.log(result)
+//       res.json({ message: 'Database connected!', time: result.rows[0] });
+//     } catch (err) {
+//       console.log('Error connecting to the database:', err);
+//       res.status(500).json({ message: 'Database connection failed!', error: err });
+//     }
+// });
+
+
 
 app.listen(PORT, () => {
       console.log("Server Active runnnig Port: " + PORT)
