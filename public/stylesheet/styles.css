@@ -72,6 +72,10 @@ footer p {
     width: 100%;
 }
 
+td {
+    font-size: 14px;
+}
+
 th, td {
     border-bottom: 1px solid #323445;
     padding: 20px;
@@ -243,6 +247,8 @@ td {
     fill: #eb3841;
 }
 
+
+
 /* media queries */
   @media (max-width: 576px) {
 
@@ -266,3 +272,13 @@ td {
 svg path {
     fill: #9693f5; 
 }
+
+.portfoliotable > table > thead > tr > th {
+    padding: 10px 20px 15px 20px;
+}
+
+.portfoliotable > table > tbody > tr > td {
+    padding: 10px 20px 10px 20px;
+}
+
+
