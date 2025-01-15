@@ -177,11 +177,11 @@ app.post("/portfolio", async (req, res) => {
                 const coinID = results.rows[0].cmc_id
                 await db.query('INSERT INTO portfolio (amount, avg_buy, user_id, coin_id, avg_sell) VALUES ($1, $2, $3, $4, $5)',
                      [coinAmount, avg_buy, user.id, coinID, avg_sell]);
-                res.redirect("/portfolio")
             }
             else {
                 console.log("coin can't be found")
             }
+            res.redirect("/portfolio")
         } catch (error) {
             console.log(error)
         }
@@ -235,10 +235,8 @@ app.post("/register", async function (req, res, next) {
                     console.log("insterting")
                     await db.query('INSERT INTO users (email, password) VALUES($1, $2)', [email, hash])
                     console.log("user registered")
-                    let user = {
-                        email : email,
-                        password : hash
-                    }
+                    let searchUser = await db.query('SELECT * FROM users WHERE email = $1', [email])
+                    let user = searchUser.rows[0]
                     req.login(user, (err) => {
                         if (err) {
                             console.error("Error during login:", err);
@@ -297,7 +295,6 @@ app.delete("/deletePortfolioItem", async (req, res) => {
     const id = req.query.id
     try {
         const result = await db.query("DELETE FROM portfolio WHERE id = $1", [id])
-        console.log(result)
         if (result.rowCount > 0) {
             res.status(200).json({ message: 'Portfolio item deleted successfully' });
           } else {

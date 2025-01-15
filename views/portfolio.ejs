@@ -11,7 +11,7 @@
     </div>
     <div class="container d-flex justify-content-between">
         <div>
-            <h1>$<%= Number(Number(total).toFixed(2)).toLocaleString() %></h1>
+            <h1 class="totalAmount">$<%= Number(Number(total).toFixed(2)).toLocaleString() %></h1>
         </div>
         <div>
             <a class="addcoins" id="togglebutton" style="cursor: pointer;">+ Add Coin</a>
@@ -72,7 +72,7 @@
                             </td>
                             <td>$<%= Number(Number(entries[i].price).toFixed(2)).toLocaleString() %></td>
                             <td class="text-end">
-                                <div>
+                                <div class="choldings">
                                     $<%= Number(Number(entries[i].price * entries[i].amount).toFixed(2)).toLocaleString() %>                                    %>
                                 </div>
                                 <div style="color: #595f70;">

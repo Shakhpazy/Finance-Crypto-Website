@@ -41,6 +41,8 @@ document.querySelector(".search-bar").addEventListener("input", async (e) => {
 
 })
 
+
+
 //Close portfolio search bar on click
 document.body.addEventListener("click", () => {
     drop_down = document.getElementById("coinlist")
@@ -60,6 +62,24 @@ pnlEntries.forEach(elm => {
     }
 });
 
+function getTotal() {
+    let total = 0;
+    document.querySelectorAll(".choldings").forEach((item) => {
+        // Extract the numerical part of the innerHTML and convert it to a float
+        const amountStr = item.innerHTML.replace(/[^0-9.-]+/g, ""); 
+        const amount = parseFloat(amountStr);
+
+        // Add the parsed amount to the total
+        if (!isNaN(amount)) {
+            total += amount;
+        }
+    });
+
+    total = (Number(total.toFixed(2))).toLocaleString()
+    document.querySelector(".totalAmount").innerHTML = total
+    // Output the total to the console
+    console.log(`Total: $${total}`);
+}
 
 document.querySelectorAll(".a_trash").forEach(trash => {
     trash.addEventListener("click", async (e) => {
@@ -74,11 +94,11 @@ document.querySelectorAll(".a_trash").forEach(trash => {
             if (response.status == 200) {
                 const row = document.getElementById("row"+value)
                 row.remove()
+                getTotal()
             } 
             else {
                 console.log("error deleting item")
             }
-
         } 
         else {
             return
