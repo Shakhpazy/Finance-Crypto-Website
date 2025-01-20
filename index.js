@@ -348,9 +348,9 @@ passport.deserializeUser((user, done) => {
 
 // api calls
 setInterval(() => {
-    console.log("15 minute past...")
+    console.log("60 minute past...")
     API.fetchCryptoData(1000)
-}, 180000 * 5)
+}, 180000 * 5 * 4)
 
 
 
