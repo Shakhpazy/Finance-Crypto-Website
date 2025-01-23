@@ -345,7 +345,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
     done(null, user)
 })
-
+ 
 // api calls
 setInterval(() => {
     console.log("60 minute past...")

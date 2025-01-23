@@ -18,6 +18,7 @@ document.getElementById("togglebutton").addEventListener("click", () => {
 document.querySelector(".search-bar").addEventListener("input", async (e) => {
     const query = e.target.value;
     const suggestions = document.getElementById("coinlist")
+    let isSelectingFromDropdown = false;
 
     if (query.length > 1) {
         const response = await fetch('/search?q=' + (query) )
@@ -27,30 +28,48 @@ document.querySelector(".search-bar").addEventListener("input", async (e) => {
         coins.forEach((coin) => {
             const item = document.createElement('li');
             item.textContent = coin.name;
-            item.addEventListener('click', () => {
+            item.setAttribute('data-value', coin.name);
+
+            item.addEventListener('mousedown', () => {
+                isSelectingFromDropdown = true;
                 e.target.value = coin.name;
                 suggestions.style.display = 'none';
             });
             suggestions.appendChild(item);
         });
 
-        suggestions.style.display = 'block';
+        suggestions.style.display = coins.length > 0 ? 'block' : 'none';
     } else {
         suggestions.style.display = 'none';
     }
 
+    e.target.addEventListener('blur', () => {
+        const inputValue = e.target.value.trim(); // Get the trimmed input value
+        const suggestions = document.getElementById("coinlist");
+        if (inputValue.length == 0) {
+            return
+          }
+
+        if (isSelectingFromDropdown) {
+            isSelectingFromDropdown = false; // Reset the flag and skip validation
+            return;
+        }
+
+        // Check if the input matches a dropdown option
+        const isValid = Array.from(suggestions.children).some(
+            (child) => child.dataset.value === inputValue
+        );
+
+        if (!isValid) {
+            e.target.value = ''; // Clear the input field
+            alert('Please select a valid cryptocurrency from the list.');
+        }
+
+        suggestions.style.display = 'none'; // Hide the dropdown
+    });
+    
 })
 
-
-
-//Close portfolio search bar on click
-document.body.addEventListener("click", () => {
-    drop_down = document.getElementById("coinlist")
-    let style = getComputedStyle(drop_down).display
-    if (style != "none") {
-        drop_down.style.display = "none"
-    }
-})
 
 const pnlEntries = document.querySelectorAll(".pnl")
 pnlEntries.forEach(elm => {
