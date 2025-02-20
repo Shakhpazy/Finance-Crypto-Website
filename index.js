@@ -4,7 +4,6 @@ import pg from 'pg'
 import env from 'dotenv'
 import paginate from 'express-paginate'
 //user auth and encryption
-import postgres from 'postgres'
 import bcrypt from 'bcrypt'
 import passport from 'passport'
 import { Strategy } from 'passport-local'
@@ -66,7 +65,7 @@ app.get("/", async (req, res) => {
     try {
         //api call to update the database --> then get all rows
         //(await API.fetchCryptoData(1000))
-        theData = (await db.query("SELECT * FROM coins ORDER BY market_cap DESC LIMIT 20")).rows  
+        theData = (await db.query("SELECT * FROM coins ORDER BY cmc_rank LIMIT 20")).rows  
     } catch (error) {
         console.log(error)
     }
@@ -101,7 +100,7 @@ app.get("/cryptocurrency", async (req, res) => {
         const page = parseInt(req.query.page) || 1
         const offset = (page-1) * limit
         const pageCount = Math.ceil(1000 / 10)
-        theData = (await db.query("SELECT * FROM coins ORDER BY market_cap DESC OFFSET $1 LIMIT $2", [offset, limit])).rows 
+        theData = (await db.query("SELECT * FROM coins ORDER BY cmc_rank OFFSET $1 LIMIT $2", [offset, limit])).rows 
         res.render("coinlist.ejs", {
             user : req.user,
             data : theData,
@@ -348,9 +347,9 @@ passport.deserializeUser((user, done) => {
  
 // api calls
 setInterval(() => {
-    console.log("60 minute past...")
+    console.log("90 minute past...")
     API.fetchCryptoData(1000)
-}, 180000 * 5 * 4)
+}, 90 * 60 * 1000)
 
 
 
