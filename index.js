@@ -131,7 +131,6 @@ app.get("/search", async (req, res) => {
 })
 
 app.get("/coin/:coin", async (req, res) => {
-    console.log("get specific coin", req.params.coin)
     let theData = {}
     try {
         theData = (await db.query(`SELECT * FROM coins WHERE name = '${req.params.coin}'`)).rows[0]
@@ -162,8 +161,6 @@ app.post("/portfolio", async (req, res) => {
     const avg_buy = parseFloat(data.avg_buy_price)
     const avg_sell = parseFloat(data.avg_sell_price)
 
-    console.log("post about portfolio")
-
     if(!coinAmount || !avg_buy || !coinName || !avg_sell) {
         console.log("inputs may not be valid")
         res.redirect("/portfolio")
@@ -190,17 +187,14 @@ app.post("/portfolio", async (req, res) => {
 })
 
 app.post("/", async (req, res) => {
-    console.log("post 2 coins")
     const data = req.body
     let theData = []
     let theCrypto1 = undefined
     let theCrypto2 = undefined
-    console.log(data.fcoin1)
-    console.log(data.fcoin2)
     try {
         theCrypto1 = (await db.query(`SELECT * FROM coins WHERE name = '${data.fcoin1}'`)).rows[0]
         theCrypto2 = (await db.query(`SELECT * FROM coins WHERE name = '${data.fcoin2}'`)).rows[0]
-        theData = (await db.query("SELECT * FROM coins ORDER BY market_cap DESC LIMIT 20")).rows
+        theData = (await db.query("SELECT * FROM coins ORDER BY cmc_rank LIMIT 20")).rows
     } catch (error) {
         console.log(error)
     }
@@ -217,11 +211,9 @@ app.post("/", async (req, res) => {
 app.post("/register", async function (req, res, next) {
     const email = req.body.email.toLowerCase()
     const password = req.body.password
-    console.log("testing")
     try {
         //check if email already in the system
         const results = await db.query('SELECT * FROM users where email = $1', [email])
-        console.log(results.rows.length)
         if (results.rows.length >= 1) {
             console.log("account exist")
             res.redirect("/login")
