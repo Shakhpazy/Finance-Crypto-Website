@@ -25,7 +25,7 @@ A full-stack cryptocurrency web application that lets users explore the crypto m
 ## ⚡ Getting Started
 
 ### 1. Clone the repo
-git clone https://github.com/your-username/CoinCapCrypto.git
+git clone
 cd CoinCapCrypto
 
 2. Install dependencies
