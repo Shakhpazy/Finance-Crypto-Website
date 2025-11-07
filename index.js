@@ -4,6 +4,7 @@ import pg from 'pg'
 import env from 'dotenv'
 import paginate from 'express-paginate'
 //user auth and encryption
+import postgres from 'postgres'
 import bcrypt from 'bcrypt'
 import passport from 'passport'
 import { Strategy } from 'passport-local'
@@ -14,7 +15,7 @@ import { coinmarketcap } from './CoinMarketCap.js'
 
 env.config()
 
-const PORT = process.env.PORT || 3000;
+const PORT = 3000
 const app = express()
 
 //pagination 10 items per page 100 pages
@@ -43,29 +44,12 @@ app.use(session({
 // })
 // db.connect()
 // export default db;
-let db;
-
-function createPool() {
-  const pool = new pg.Pool({
+const db = new pg.Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
-    connectionTimeoutMillis: 5000,
-    idleTimeoutMillis: 30000,
-  });
-
-pool.on("error", (err) => {
-  console.error("⚠️ PG pool error:", err.message);
-});
-
-  return pool;
-}
-
-db = createPool();
-
-// handle auto-reconnect gracefully
-db.on('error', (err) => {
-  console.error('⚠️ Lost DB connection, retrying...', err.message);
-});
+    ssl: {
+        rejectUnauthorized: false, // Allow SSL without rejecting unauthorized certificates
+    },
+})
 
 app.use(express.static("public")) 
 app.use(express.json());
@@ -73,6 +57,16 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 const API = new coinmarketcap();
 
+app.get('/test-db', async (req, res) => {
+    try {
+      const result = await db.query('SELECT * FROM users');
+      console.log(result)
+      res.json({ message: 'Database connected!', time: result.rows[0] });
+    } catch (err) {
+      console.log('Error connecting to the database:', err);
+      res.status(500).json({ message: 'Database connection failed!', error: err });
+    }
+});
 //first api call to store db
 //await API.fetchCryptoData(1000)
 app.get("/", async (req, res) => {
@@ -82,7 +76,7 @@ app.get("/", async (req, res) => {
     try {
         //api call to update the database --> then get all rows
         //(await API.fetchCryptoData(1000))
-        theData = (await db.query("SELECT * FROM coins ORDER BY cmc_rank LIMIT 20")).rows  
+        theData = (await db.query("SELECT * FROM coins ORDER BY market_cap DESC LIMIT 20")).rows  
     } catch (error) {
         console.log(error)
     }
@@ -117,7 +111,7 @@ app.get("/cryptocurrency", async (req, res) => {
         const page = parseInt(req.query.page) || 1
         const offset = (page-1) * limit
         const pageCount = Math.ceil(1000 / 10)
-        theData = (await db.query("SELECT * FROM coins ORDER BY cmc_rank OFFSET $1 LIMIT $2", [offset, limit])).rows 
+        theData = (await db.query("SELECT * FROM coins ORDER BY market_cap DESC OFFSET $1 LIMIT $2", [offset, limit])).rows 
         res.render("coinlist.ejs", {
             user : req.user,
             data : theData,
@@ -129,6 +123,7 @@ app.get("/cryptocurrency", async (req, res) => {
     } catch (error) {
         console.log(error)
     }
+    console.log(theData.length)
 }) 
 
 //search functionality
@@ -147,6 +142,7 @@ app.get("/search", async (req, res) => {
 })
 
 app.get("/coin/:coin", async (req, res) => {
+    console.log("get specific coin", req.params.coin)
     let theData = {}
     try {
         theData = (await db.query(`SELECT * FROM coins WHERE name = '${req.params.coin}'`)).rows[0]
@@ -177,6 +173,8 @@ app.post("/portfolio", async (req, res) => {
     const avg_buy = parseFloat(data.avg_buy_price)
     const avg_sell = parseFloat(data.avg_sell_price)
 
+    console.log("post about portfolio")
+
     if(!coinAmount || !avg_buy || !coinName || !avg_sell) {
         console.log("inputs may not be valid")
         res.redirect("/portfolio")
@@ -189,11 +187,11 @@ app.post("/portfolio", async (req, res) => {
                 const coinID = results.rows[0].cmc_id
                 await db.query('INSERT INTO portfolio (amount, avg_buy, user_id, coin_id, avg_sell) VALUES ($1, $2, $3, $4, $5)',
                      [coinAmount, avg_buy, user.id, coinID, avg_sell]);
+                res.redirect("/portfolio")
             }
             else {
                 console.log("coin can't be found")
             }
-            res.redirect("/portfolio")
         } catch (error) {
             console.log(error)
         }
@@ -203,14 +201,17 @@ app.post("/portfolio", async (req, res) => {
 })
 
 app.post("/", async (req, res) => {
+    console.log("post 2 coins")
     const data = req.body
     let theData = []
     let theCrypto1 = undefined
     let theCrypto2 = undefined
+    console.log(data.fcoin1)
+    console.log(data.fcoin2)
     try {
         theCrypto1 = (await db.query(`SELECT * FROM coins WHERE name = '${data.fcoin1}'`)).rows[0]
         theCrypto2 = (await db.query(`SELECT * FROM coins WHERE name = '${data.fcoin2}'`)).rows[0]
-        theData = (await db.query("SELECT * FROM coins ORDER BY cmc_rank LIMIT 20")).rows
+        theData = (await db.query("SELECT * FROM coins ORDER BY market_cap DESC LIMIT 20")).rows
     } catch (error) {
         console.log(error)
     }
@@ -224,12 +225,14 @@ app.post("/", async (req, res) => {
     res.render("index.ejs", {data : theData, crypto1 : theCrypto1, crypto2 : theCrypto2, user : req.user})  
 })
 
-app.post("/register", async function (req, res, next) {
+app.post("/register", async (req, res) => {
     const email = req.body.email.toLowerCase()
     const password = req.body.password
+    console.log("testing")
     try {
         //check if email already in the system
         const results = await db.query('SELECT * FROM users where email = $1', [email])
+        console.log(results.rows.length)
         if (results.rows.length >= 1) {
             console.log("account exist")
             res.redirect("/login")
@@ -242,17 +245,7 @@ app.post("/register", async function (req, res, next) {
                     console.log("insterting")
                     await db.query('INSERT INTO users (email, password) VALUES($1, $2)', [email, hash])
                     console.log("user registered")
-                    let searchUser = await db.query('SELECT * FROM users WHERE email = $1', [email])
-                    let user = searchUser.rows[0]
-                    req.login(user, (err) => {
-                        if (err) {
-                            console.error("Error during login:", err);
-                            return
-                        }
-                        console.log("User authenticated:");  // Log the authenticated user
-                        return res.redirect("/");  // Successful login, redirect
-                    });
-                    //res.redirect("/login")
+                    res.redirect("/login")
                 }  
             })
         }
@@ -298,23 +291,6 @@ app.get("/logout", (req, res) => {
       });
 })
 
-app.delete("/deletePortfolioItem", async (req, res) => {
-    const id = req.query.id
-    try {
-        const result = await db.query("DELETE FROM portfolio WHERE id = $1", [id])
-        if (result.rowCount > 0) {
-            res.status(200).json({ message: 'Portfolio item deleted successfully' });
-          } else {
-            res.status(404).json({ message: 'Portfolio item not found' });
-          }
-    } catch (error) {
-        res.status(500).json({ message: 'Error deleting portfolio item' });
-    }
-})
-
-
-
-
 passport.use(new Strategy({
     usernameField: 'email', 
     passwordField: 'password' 
@@ -352,49 +328,16 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
     done(null, user)
 })
- 
+
 // api calls
 setInterval(() => {
-    console.log("90 minute past...")
+    console.log("15 minute past...")
     API.fetchCryptoData(1000)
-}, 90 * 60 * 1000)
-
-
-
-
-//DATABASE TEST CONNECTION
-// app.get('/test-db', async (req, res) => {
-//     try {
-//       const result = await db.query('SELECT * FROM users');
-//       console.log(result)
-//       res.json({ message: 'Database connected!', time: result.rows[0] });
-//     } catch (err) {
-//       console.log('Error connecting to the database:', err);
-//       res.status(500).json({ message: 'Database connection failed!', error: err });
-//     }
-// });
-
-// app.get('/test-db', async (req, res) => {
-//   try {
-//     const result = await db.query('SELECT NOW() AS time');
-//     res.json({ ok: true, time: result.rows[0].time });
-//   } catch (err) {
-//     res.status(500).json({ ok: false, err: err.message });
-//   }
-// });
-
-setInterval(async () => {
-  try {
-    await db.query("SELECT 1");
-    console.log("🫀 DB connection alive");
-  } catch (err) {
-    console.error("⚠️ DB heartbeat failed:", err.message);
-  }
-}, 5 * 60 * 1000); // every 5 minutes
+}, 180000 * 5)
 
 app.listen(PORT, () => {
-  console.log(`✅ Server active, running on port ${PORT}`);
-});
+      console.log("Server Active runnnig Port: " + PORT)
+})
 
 export default app
 export {db}
