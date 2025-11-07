@@ -44,11 +44,17 @@ app.use(session({
 // db.connect()
 // export default db;
 const db = new pg.Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false, // Allow SSL without rejecting unauthorized certificates
-    },
-})
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+  max: 10,                 // allow up to 10 clients
+  idleTimeoutMillis: 30000, // close idle clients after 30s
+  connectionTimeoutMillis: 10000 // give up if can't connect in 10s
+});
+
+// handle auto-reconnect gracefully
+db.on('error', (err) => {
+  console.error('⚠️ Lost DB connection, retrying...', err.message);
+});
 
 app.use(express.static("public")) 
 app.use(express.json());
@@ -366,7 +372,14 @@ setInterval(() => {
 //   }
 // });
 
-
+setInterval(async () => {
+  try {
+    await db.query("SELECT 1");
+    console.log("🫀 DB connection alive");
+  } catch (err) {
+    console.error("⚠️ DB heartbeat failed:", err.message);
+  }
+}, 5 * 60 * 1000); // every 5 minutes
 
 app.listen(PORT, () => {
       console.log("Server Active runnnig Port: " + PORT)
