@@ -43,3 +43,4 @@ html-test-output/
 # Temporary files
 *.swp
 *~
+.vercel

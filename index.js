@@ -14,7 +14,7 @@ import { coinmarketcap } from './CoinMarketCap.js'
 
 env.config()
 
-const PORT = 3000
+const PORT = process.env.PORT || 3000;
 const app = express()
 
 //pagination 10 items per page 100 pages
