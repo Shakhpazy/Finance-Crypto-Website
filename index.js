@@ -358,6 +358,15 @@ setInterval(() => {
 //     }
 // });
 
+// app.get('/test-db', async (req, res) => {
+//   try {
+//     const result = await db.query('SELECT NOW() AS time');
+//     res.json({ ok: true, time: result.rows[0].time });
+//   } catch (err) {
+//     res.status(500).json({ ok: false, err: err.message });
+//   }
+// });
+
 
 
 app.listen(PORT, () => {
