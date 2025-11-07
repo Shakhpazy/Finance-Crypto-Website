@@ -112,7 +112,6 @@ app.get("/cryptocurrency", async (req, res) => {
     } catch (error) {
         console.log(error)
     }
-    console.log(theData.length)
 }) 
 
 //search functionality
