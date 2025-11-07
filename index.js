@@ -43,13 +43,24 @@ app.use(session({
 // })
 // db.connect()
 // export default db;
-const db = new pg.Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
-  max: 10,                 // allow up to 10 clients
-  idleTimeoutMillis: 30000, // close idle clients after 30s
-  connectionTimeoutMillis: 10000 // give up if can't connect in 10s
+let db;
+
+function createPool() {
+  const pool = new pg.Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false },
+    connectionTimeoutMillis: 5000,
+    idleTimeoutMillis: 30000,
+  });
+
+pool.on("error", (err) => {
+  console.error("⚠️ PG pool error:", err.message);
 });
+
+  return pool;
+}
+
+db = createPool();
 
 // handle auto-reconnect gracefully
 db.on('error', (err) => {
@@ -382,8 +393,8 @@ setInterval(async () => {
 }, 5 * 60 * 1000); // every 5 minutes
 
 app.listen(PORT, () => {
-      console.log("Server Active runnnig Port: " + PORT)
-})
+  console.log(`✅ Server active, running on port ${PORT}`);
+});
 
 export default app
 export {db}
